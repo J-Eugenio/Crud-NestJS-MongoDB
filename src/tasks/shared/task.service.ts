@@ -22,8 +22,12 @@ export class TaskService {
   }
 
   async update(id: string, task: Task) {
-    await this.taskModel.updateOne({ _id: id }, task).exec();
-    return this.getById(id);
+    try {
+      await this.taskModel.updateOne({ _id: id }, task).exec();
+      return this.getById(id);
+    } catch (error) {
+      console.log('ID não encontrado');
+    }
   }
 
   async delete(id: string) {
