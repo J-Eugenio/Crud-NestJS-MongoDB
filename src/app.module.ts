@@ -7,7 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('URL de conexão com MongoDB Cluster'),
+    MongooseModule.forRoot(
+      'mongodb+srv://aljoker:3FzEisuiLZHsiEhl@cluster0.rf13x.mongodb.net/dev?retryWrites=true&w=majority',
+    ),
     TasksModule,
   ],
   controllers: [AppController],

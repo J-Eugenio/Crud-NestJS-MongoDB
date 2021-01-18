@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Task } from './task';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,7 +13,11 @@ export class TaskService {
   }
 
   async getById(id: string) {
-    return await this.taskModel.findById(id).exec();
+    try {
+      return await this.taskModel.findById(id).exec();
+    } catch {
+      return 0;
+    }
   }
 
   async create(task: Task) {
@@ -25,12 +29,16 @@ export class TaskService {
     try {
       await this.taskModel.updateOne({ _id: id }, task).exec();
       return this.getById(id);
-    } catch (error) {
-      console.log('ID não encontrado');
+    } catch {
+      throw new HttpException('ID not found!!', HttpStatus.NO_CONTENT);
     }
   }
 
   async delete(id: string) {
-    return this.taskModel.findByIdAndDelete(id);
+    try {
+      return this.taskModel.findByIdAndDelete(id);
+    } catch {
+      throw new HttpException('ID not found!!', HttpStatus.NO_CONTENT);
+    }
   }
 }
